@@ -21,13 +21,9 @@ import (
 
 	"github.com/offchainlabs/nitro/arbnode"
 	"github.com/offchainlabs/nitro/arbnode/dataposter/storage"
-	"github.com/offchainlabs/nitro/bold/chain-abstraction"
-	"github.com/offchainlabs/nitro/bold/chain-abstraction/sol-implementation"
-	"github.com/offchainlabs/nitro/bold/challenge-manager"
-	modes "github.com/offchainlabs/nitro/bold/challenge-manager/types"
+	modes "github.com/offchainlabs/nitro/bold/challenge/types"
 	"github.com/offchainlabs/nitro/bold/containers/option"
-	"github.com/offchainlabs/nitro/bold/layer2-state-provider"
-	"github.com/offchainlabs/nitro/bold/state-commitments/history"
+	"github.com/offchainlabs/nitro/bold/statecommitments/history"
 	"github.com/offchainlabs/nitro/bold/util"
 	"github.com/offchainlabs/nitro/solgen/go/challengeV2gen"
 	"github.com/offchainlabs/nitro/solgen/go/mocksgen"
@@ -347,16 +343,16 @@ func startBoldChallengeManager(t *testing.T, ctx context.Context, builder *NodeB
 	)
 	Require(t, err)
 
-	stackOpts := []challengemanager.StackOpt{
-		challengemanager.StackWithName(addressName),
-		challengemanager.StackWithMode(modes.MakeMode),
-		challengemanager.StackWithPostingInterval(time.Second * 3),
-		challengemanager.StackWithPollingInterval(time.Second),
-		challengemanager.StackWithAverageBlockCreationTime(time.Second),
-		challengemanager.StackWithMinimumGapToParentAssertion(0),
+	stackOpts := []challenge.StackOpt{
+		challenge.StackWithName(addressName),
+		challenge.StackWithMode(modes.MakeMode),
+		challenge.StackWithPostingInterval(time.Second * 3),
+		challenge.StackWithPollingInterval(time.Second),
+		challenge.StackWithAverageBlockCreationTime(time.Second),
+		challenge.StackWithMinimumGapToParentAssertion(0),
 	}
 
-	challengeManager, err := challengemanager.NewChallengeStack(
+	challengeManager, err := challenge.NewChallengeStack(
 		assertionChain,
 		provider,
 		stackOpts...,
